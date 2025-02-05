@@ -44,10 +44,10 @@ describe("App Routing", () => {
     expect(screen.getByText(/user dashboard/i)).toBeInTheDocument();
   });
 
-  // test("renders Admin Dashboard at /adminDashboard", () => {
-  //   renderWithRouter("/adminDashboard");
-  //   expect(screen.getByText(/hello welcome admin/i)).toBeInTheDocument();
-  // });
+  test("renders Admin Dashboard at /adminDashboard", () => {
+    renderWithRouter("/adminDashboard");
+    expect(screen.getByText(/Hello, welcome Admin/i)).toBeInTheDocument();
+  });
 
   test("renders Signup page at /Signup", () => {
     renderWithRouter("/Signup");
