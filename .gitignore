@@ -27,3 +27,5 @@ yarn-error.log*
 .sonar-project.properties
 .sonartmp
 .sonar.tmp
+.husky
+.env

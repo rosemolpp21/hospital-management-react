@@ -86,22 +86,22 @@ describe("Signup Component", () => {
       target: { value: "John" },
     });
     fireEvent.change(screen.getByPlaceholderText(/Last Name/i), {
-      target: { value: "Doe" },
+      target: { value: "Peter" },
     });
     fireEvent.change(screen.getByPlaceholderText(/Age/i), {
-      target: { value: "30" },
+      target: { value: "22" },
     });
     fireEvent.change(screen.getByPlaceholderText(/Phone Number/i), {
-      target: { value: "1234567890" },
+      target: { value: "9234567890" },
     });
     fireEvent.change(screen.getByPlaceholderText(/^Address$/i), {
-      target: { value: "123 Street" },
+      target: { value: "kkpp" },
     });
     fireEvent.change(screen.getByPlaceholderText(/Email-Address/i), {
-      target: { value: "test@example.com" },
+      target: { value: "johm.test@example.com" },
     });
     fireEvent.change(screen.getByPlaceholderText(/Password/i), {
-      target: { value: "password123" },
+      target: { value: "password" },
     });
     fireEvent.click(screen.getByText(/Submit details/i));
     await waitFor(() => expect(window.location.href).toContain('http://localhost/'));

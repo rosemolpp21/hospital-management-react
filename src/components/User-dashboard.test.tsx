@@ -1,118 +1,85 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen, waitFor} from "@testing-library/react";
+import "@testing-library/jest-dom";
 import axios from "axios";
+import { BrowserRouter} from "react-router-dom";
 import UserDashboard from "./User-dashboard";
 
-jest.mock("axios"); 
+jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe("UserDashboard Component", () => {
-  test("renders User Dashboard heading", async () => {
-    render(
-      <MemoryRouter>
-        <UserDashboard />
-      </MemoryRouter>
-    );
+  const mockUserData = {
+    first_name: "John",
+    last_name: "Peter",
+    email: "johm.peter@example.com",
+    phone_no: 9234567890,
+    gender: "Male",
+    age: 22,
+    address: "Thrissur",
+  };
 
+  const mockAppointmentData = {
+    patient_id: 101,
+    docter_id: 202,
+    status: "Confirmed",
+    appointment_date: new Date("2024-06-15"),
+  };
+
+  beforeEach(() => {
+    localStorage.setItem("token", "mocked-token");
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  test("displays user details", async () => {
+    mockedAxios.get
+      .mockResolvedValueOnce({ data: mockUserData })
+      .mockResolvedValueOnce({ data: mockAppointmentData });
+    render(
+      <BrowserRouter>
+        <UserDashboard />
+      </BrowserRouter>
+    );
     expect(screen.getByText(/User Dashboard/i)).toBeInTheDocument();
+    await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledTimes(2));
+    expect(screen.getByText("Welcome, John Peter!")).toBeInTheDocument();
+    expect(screen.getByText("Email: johm.peter@example.com")).toBeInTheDocument();
+    expect(screen.getByText("Phone: 9234567890")).toBeInTheDocument();
+    expect(screen.getByText("Gender: Male")).toBeInTheDocument();
+    expect(screen.getByText("Age: 22")).toBeInTheDocument();
+    expect(screen.getByText("Address: Thrissur")).toBeInTheDocument();
+    expect(screen.getByText("Patient ID: 101")).toBeInTheDocument();
+    expect(screen.getByText("Doctor ID: 202")).toBeInTheDocument();
+    expect(screen.getByText("Status: Confirmed")).toBeInTheDocument();
+    expect(screen.getByText("Appointment Date: Sat Jun 15 2024 05:30:00 GMT+0530 (India Standard Time)")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Book appointment/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /logout/i })).toBeInTheDocument();
+  
   });
 
-  test("displays login message when no user data is found", async () => {
-    mockedAxios.get.mockRejectedValueOnce({
-      response: { data: { message: "No token found. Please login." } },
-    });
+  test("displays appointment details if available", async () => {
+    mockedAxios.get
+      .mockResolvedValueOnce({ data: mockUserData })
+      .mockResolvedValueOnce({ data: mockAppointmentData });
 
     render(
-      <MemoryRouter>
+      <BrowserRouter>
         <UserDashboard />
-      </MemoryRouter>
+      </BrowserRouter>
     );
 
-    await waitFor(() =>
-      expect(
-        screen.getByText(/No token found. Please login./i)
-      ).toBeInTheDocument()
-    );
+    await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledTimes(4));
+
+    expect(screen.getByText("Patient ID: 101")).toBeInTheDocument();
+    expect(screen.getByText("Doctor ID: 202")).toBeInTheDocument();
+    expect(screen.getByText("Status: Confirmed")).toBeInTheDocument();
+    expect(screen.getByText("Appointment Date: Sat Jun 15 2024 05:30:00 GMT+0530 (India Standard Time)")).toBeInTheDocument();
   });
-
-  // test("displays user details when API call succeeds", async () => {
-  //   mockedAxios.get.mockResolvedValueOnce({
-  //     data: {
-  //       first_name: "John",
-  //       last_name: "Peter",
-  //     },
-  //   });
-
-  //   render(
-  //     <MemoryRouter>
-  //       <UserDashboard />
-  //     </MemoryRouter>
-  //   );
-
-  //   await waitFor(() =>
-  //     expect(screen.getByText(/John Peter/i)).toBeInTheDocument()
-  //   );
-  // });
-
-  // test("displays appointment details if available", async () => {
-  //   mockedAxios.get
-  //     .mockResolvedValueOnce({
-  //       data: {
-  //         first_name: "Jane",
-  //         last_name: "Doe",
-  //         email: "jane.doe@example.com",
-  //         phone_no: 9876543210,
-  //         gender: "Female",
-  //         age: 25,
-  //         address: "456 Another St",
-  //       },
-  //     })
-  //     .mockResolvedValueOnce({
-  //       data: "Your appointment is on Monday.",
-  //     });
-
-  //   render(
-  //     <MemoryRouter>
-  //       <UserDashboard />
-  //     </MemoryRouter>
-  //   );
-
-  //   await waitFor(() => {
-  //     expect(
-  //       screen.getByText(/Your appointment is on Monday./i)
-  //     ).toBeInTheDocument();
-  //   });
-  // });
-
-  // test("displays no appointments message when none exist", async () => {
-  //   mockedAxios.get
-  //     .mockResolvedValueOnce({
-  //       data: {
-  //         first_name: "Alice",
-  //         last_name: "Smith",
-  //         email: "alice.smith@example.com",
-  //         phone_no: 1122334455,
-  //         gender: "Female",
-  //         age: 28,
-  //         address: "789 Street Lane",
-  //       },
-  //     })
-  //     .mockResolvedValueOnce({ data: null });
-
-  //   render(
-  //     <MemoryRouter>
-  //       <UserDashboard />
-  //     </MemoryRouter>
-  //   );
-
-  //   await waitFor(() => {
-  //     expect(
-  //       screen.getByText(/You dont have any appointments/i)
-  //     ).toBeInTheDocument();
-  //   });
-  // });
 });
+
 
 
 
