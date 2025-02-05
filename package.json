@@ -5,6 +5,9 @@
   "dependencies": {
     "axios": "^1.7.9",
     "cra-template-typescript": "1.2.0",
+    "dotenv": "^16.4.7",
+    "history": "^5.3.0",
+    "husky": "^9.1.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
@@ -19,8 +22,9 @@
     "coverage": "jest --coverage",
     "test": "jest --coverage --config jest.config.ts",
     "eject": "react-scripts eject",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" ",
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [
@@ -46,7 +50,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.12.0",
+    "@types/node": "^22.13.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-router-dom": "^5.3.3",

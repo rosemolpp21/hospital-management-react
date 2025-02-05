@@ -1,0 +1,68 @@
+#user-dashboard {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #3c66b4;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  #dashboard-head,#appointment-head{
+    color:rgb(255, 255, 255)
+  }
+  .success-message {
+    color: rgb(133, 213, 195);
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  #dash-logout{
+    background-color: rgb(141, 21, 21);
+    width:200px;
+    margin-left: 10px;
+  }
+  #dash-logout:hover{
+    background-color: rgb(168, 28, 28);
+  }
+  #book-appointment{
+    background-color: rgb(19, 73, 19);
+    width:200px;
+  }
+  #book-appointment:hover{
+    background-color: rgb(20, 96, 20);
+  }
+  .error-message {
+    color: rgb(244, 114, 114);
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+
+  #user-info {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #3c66b4;
+  }
+  
+  .user-name {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .user-details {
+    font-size: 18px;
+    color:#ffffff;
+    margin: 5px 0;
+  }
+  
+  #loading-message {
+    font-size: 18px;
+    color: #ffffff;
+    margin-top: 20px;
+    font-style: italic;
+  }
+  

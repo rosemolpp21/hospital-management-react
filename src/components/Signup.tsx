@@ -4,9 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/Signup.css";
 
 const Signup: React.FC = () => {
-  const [firstName, setFirstname] = useState("");
-  const [lastName, setLastname] = useState("");
-  const [phoneNo, setPhoneno] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [address, setAddress] = useState("");
@@ -14,14 +11,17 @@ const Signup: React.FC = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [firstname, setFirstname] = React.useState("");
+  const [lastname, setLastname] = useState("");
+  const [phoneno, setPhoneno] = useState("");
   const navigate = useNavigate();
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     axios
       .post("http://localhost:8080/register", {
-        firstName,
-        lastName,
-        phoneNo,
+        firstname,
+        lastname,
+        phoneno,
         gender,
         age,
         address,
@@ -33,14 +33,17 @@ const Signup: React.FC = () => {
           setSuccessMessage(
             "Your details have been successfully added. Redirecting to the login page..."
           );
-          setTimeout(() => navigate("/"), 3000);
+          setErrorMessage(" ")
+          setTimeout(() => navigate("/login"), 3000);
         } else {
           setErrorMessage(
             "the email you entered is already existing or error in inserting"
           );
+          setSuccessMessage(" ")
         }
       })
-      .catch((err) => setErrorMessage(err.message));
+      .catch((err) =>{setErrorMessage(err.message);
+    setSuccessMessage(" ")});
   }
   return (
     <div className="form_container">
@@ -51,19 +54,19 @@ const Signup: React.FC = () => {
       <div className="signup-form">
         <form className="registration-form" onSubmit={handleSubmit}>
           <label htmlFor="first_name">
-            First Name
-            <input 
+            <strong>First Name</strong>
+             <input
               type="text"
               name="first_name"
               placeholder="First Name"
               className="first-name-signup"
               required
-              onChange={(e) => setFirstname(e.target.value)}
-            />
+              onChange={(e) => setFirstname(e.target.value)} 
+              />  
           </label>
           <br />
           <label htmlFor="last_name">
-            Last Name
+          <strong>Last Name</strong>
             <input
               type="text"
               name="last_name"
@@ -75,7 +78,7 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <label htmlFor="gender">
-            Gender
+          <strong>Gender</strong>
             <select
               name="gender"
               className="gender-select"
@@ -89,7 +92,7 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <label htmlFor="age">
-            Age
+          <strong>Age</strong>
             <input
               type="number"
               name="age"
@@ -101,7 +104,7 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <label htmlFor="phone_no">
-            Phone No
+          <strong>Phone No</strong>
             <input
               type="text"
               name="phone_no"
@@ -113,7 +116,7 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <label htmlFor="address">
-            Address
+          <strong>Address</strong>
             <input
               type="text"
               name="address"
@@ -125,10 +128,10 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <label htmlFor="email">
-            Email
+          <strong>Email</strong>
             <input type="email"
               name="email"
-              placeholder="Email Address"
+              placeholder="Email-Address"
               className="email-signup"
               required
               onChange={(e) => setEmail(e.target.value)}
@@ -136,7 +139,7 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <label htmlFor="password">
-            Password
+          <strong>Password</strong>
             <input
               type="password"
               name="password"
@@ -148,7 +151,7 @@ const Signup: React.FC = () => {
           </label>
           <br />
           <button type="submit">Submit details</button>
-          <Link to="/" type="submit" className="register-details-submit">
+          <Link to="/login" type="submit" className="register-details-submit">
             <button type="button">Login</button>
           </Link>
           {errorMessage && <p className="error-message">{errorMessage}</p>}

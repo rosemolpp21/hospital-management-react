@@ -1,33 +1,57 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import App from "./App";
-import userEvent from "@testing-library/user-event";
-
-jest.mock("./components/Login", () => () => <div>Login Page</div>);
-jest.mock("./components/Signup", () => () => <div>Signup Page</div>);
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./components/Homepage";
+import Login from "./components/Login";
+import Register from "./components/Signup";
+import Loginadmin from "./components/loginadmin";
+import UserDashboard from "./components/User-dashboard";
+import AdminDashboard from "./components/Admin-dashboard";
 
 describe("App Routing", () => {
-  test("renders the Login page by default", () => {
-    render(<App />);
-    expect(screen.getByText("Login Page")).toBeInTheDocument();
+  const renderWithRouter = (initialEntry: string) =>
+    render(
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<Loginadmin />} />
+          <Route path="/userDashBoard" element={<UserDashboard />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/Signup" element={<Register />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+  test("renders HomePage at default route", () => {
+    renderWithRouter("/");
+    expect(screen.getByText(/welcome to hospital management/i)).toBeInTheDocument();
   });
 
-  test("navigates to the Signup page when the URL is '/signup'", async () => {
-    window.history.pushState({}, "Signup Page", "/signup");
-    render(<App />);
-    expect(screen.getByText("Signup Page")).toBeInTheDocument();
+  test("renders Login page at /login", () => {
+    renderWithRouter("/login");
+    expect(screen.getByText(/login/i)).toBeInTheDocument();
   });
 
-  test("navigates back to Login page from Signup page", async () => {
-    const user = userEvent.setup();
-    render(<App />);
+  test("renders Admin Login page at /admin", () => {
+    renderWithRouter("/admin");
+    expect(screen.getByText(/login as admin/i)).toBeInTheDocument();
 
-    window.history.pushState({}, "Signup Page", "/signup");
-    expect(screen.getByText("Signup Page")).toBeInTheDocument();
+  });
 
-    window.history.pushState({}, "Login Page", "/");
-    await user.click(screen.getByText("Login Page"));
-    expect(screen.getByText("Login Page")).toBeInTheDocument();
+  test("renders User Dashboard at /userDashBoard", () => {
+    renderWithRouter("/userDashBoard");
+    expect(screen.getByText(/user dashboard/i)).toBeInTheDocument();
+  });
+
+  // test("renders Admin Dashboard at /adminDashboard", () => {
+  //   renderWithRouter("/adminDashboard");
+  //   expect(screen.getByText(/hello welcome admin/i)).toBeInTheDocument();
+  // });
+
+  test("renders Signup page at /Signup", () => {
+    renderWithRouter("/Signup");
+    expect(screen.getByText(/register/i)).toBeInTheDocument();
   });
 });
 

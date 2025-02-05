@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
 import '../styles/Login.css'
+import { useNavigate } from 'react-router-dom'
 
 
 
-const Login: React.FC = () => {
+const Loginadmin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -13,15 +13,15 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    axios.post('http://localhost:8080/login/user', { email, password })
+    axios.post('http://localhost:8080/login/admin', { email, password })
       .then(
         res => {
           if (res.status === 200) {
-            setSuccessMessage("you are logined successfully");
             const token=res.data.accessToken;
             localStorage.setItem("token", token);
-            localStorage.setItem("role","user");
-            navigate("/userDashBoard"); 
+            setSuccessMessage("you are logined successfully")
+            localStorage.setItem("role","admin");
+            setTimeout(()=>{navigate("/adminDashboard")},1000)
           }
           else {
             setErrorMessage("invalids credentials")
@@ -29,8 +29,9 @@ const Login: React.FC = () => {
         }
       )
       .catch((err) => {
-        if (err.response) {
-          setErrorMessage(err.response.data.message);
+        const errorResponse = err.response;
+        if (err.response?.data?.message) {
+          setErrorMessage(errorResponse.data.message);
         } else {
           setErrorMessage('error occurred invalid credentials');
         }
@@ -39,16 +40,16 @@ const Login: React.FC = () => {
   return (
     <div className='form_container'>
       <div className="form-header">
-        <h2 className="login">Login to your user account</h2>
+        <h2 className="login">Login as admin</h2>
       </div>
 
       <div className="form">
         <form className='login-form' onSubmit={handleSubmit}>
-          <label htmlFor="email">
-            <strong>Email</strong>
+          <label htmlFor="username ">
+            <strong>Username</strong>
             <input
               type="email"
-              name="email"
+              name="username"
               placeholder="Email Address"
               required
               className="login-credentials"
@@ -64,10 +65,8 @@ const Login: React.FC = () => {
               className="login-credentials"
               onChange={e => setPassword(e.target.value)}
             /></label>
-          <div><button className="button" type="submit">Submit</button>
-            <Link to='/Signup' type="submit" className="register-details-submit">
-              <button type="submit">Create an account</button>
-            </Link>
+          <div>
+            <button className="button" type="submit" name="admin-dash-redirect">Submit</button>
           </div>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
@@ -77,4 +76,5 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Loginadmin;
+

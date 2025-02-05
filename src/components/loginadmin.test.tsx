@@ -1,97 +1,95 @@
 import React, { JSX } from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
-import Login from "./Login";
+import { BrowserRouter } from "react-router-dom";
+import Loginadmin from "./loginadmin";
 
+const mockNavigate = jest.fn();
+    jest.mock("react-router-dom", () => ({
+      ...jest.requireActual("react-router-dom"),
+      useNavigate: () => mockNavigate,
+    }));
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-
 const renderWithRouter = (component: JSX.Element) => render(<BrowserRouter>{component}</BrowserRouter>);
-
-describe("Login Component", () => {
+describe("Loginadmin Component", () => {
   test("renders login form correctly", () => {
-    renderWithRouter(<Login />);
-    expect(screen.getByText(/Login to your user account/i)).toBeInTheDocument();
+    renderWithRouter(<Loginadmin/>);
+    expect(screen.getByText(/Login as admin/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Email Address")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
-    expect(screen.getByText(/Submit/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument();
   });
-
   test("updates email and password fields on change", () => {
-    renderWithRouter(<Login />);
-
+    renderWithRouter(<Loginadmin/>);
     const emailInput = screen.getByPlaceholderText("Email Address") as HTMLInputElement;
     const passwordInput = screen.getByPlaceholderText("Password") as HTMLInputElement;
-
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });
     fireEvent.change(passwordInput, { target: { value: "password123" } });
-
     expect(emailInput.value).toBe("test@example.com");
     expect(passwordInput.value).toBe("password123");
   });
 
   test("handles successful login and redirects", async () => {
-    const mockNavigate = jest.fn();
-    jest.mock("react-router-dom", () => ({
-      ...jest.requireActual("react-router-dom"),
-      useNavigate: () => mockNavigate,
-    }));
-
     mockedAxios.post.mockResolvedValueOnce({
       status: 200,
       data: { accessToken: "fake-token" },
     });
-
-    renderWithRouter(<Login />);
-
+    renderWithRouter(<Loginadmin/>);
     fireEvent.change(screen.getByPlaceholderText("Email Address"), { target: { value: "user@example.com" } });
     fireEvent.change(screen.getByPlaceholderText("Password"), { target: { value: "password123" } });
-
     fireEvent.click(screen.getByText(/Submit/i));
-
     await waitFor(() => {
-      expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/login/user", {
+      expect(mockedAxios.post).toHaveBeenCalledWith("http://localhost:8080/login/admin", {
         email: "user@example.com",
         password: "password123",
       });
       expect(localStorage.getItem("token")).toBe("fake-token")
-      expect(window.location.href).toContain('/userDashBoard')
+      expect(screen.getByText(/you are logined successfully/i)).toBeInTheDocument()
     });
+    await waitFor(()=>{expect(mockNavigate).toHaveBeenCalledWith("/adminDashboard");},{timeout:1000});
   });
 
-  test("displays error message on failed login", async () => {
+  test("shows error message on invalid credentials", async () => {
     mockedAxios.post.mockRejectedValueOnce({
-      response: {
-        data: { message: "Invalid credentials" },
-      },
+      response: { data: { message: "Invalid credentials" } },
     });
 
-    renderWithRouter(<Login />);
+    render(<Loginadmin />);
 
-    fireEvent.change(screen.getByPlaceholderText("Email Address"), { target: { value: "wrong@example.com" } });
-    fireEvent.change(screen.getByPlaceholderText("Password"), { target: { value: "wrongpassword" } });
+    fireEvent.change(screen.getByPlaceholderText(/Email Address/i), {
+      target: { value: "wrong@example.com" },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/Password/i), {
+      target: { value: "wrongpassword" },
+    });
 
     fireEvent.click(screen.getByText(/Submit/i));
 
-    await waitFor(() => {
-      expect(screen.getByText("Invalid credentials")).toBeInTheDocument();
-    });
+    await waitFor(() =>
+      expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument()
+    );
   });
 
-  test("displays generic error message when no response from server", async () => {
+  test("shows generic error message on network failure", async () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("Network error"));
 
-    renderWithRouter(<Login />);
+    render(<Loginadmin />);
 
-    fireEvent.change(screen.getByPlaceholderText("Email Address"), { target: { value: "test@example.com" } });
-    fireEvent.change(screen.getByPlaceholderText("Password"), { target: { value: "password123" } });
+    fireEvent.change(screen.getByPlaceholderText(/Email Address/i), {
+      target: { value: "admin@example.com" },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/Password/i), {
+      target: { value: "password123" },
+    });
 
     fireEvent.click(screen.getByText(/Submit/i));
 
-    await waitFor(() => {
-      expect(screen.getByText("error occurred invalid credentials")).toBeInTheDocument();
-    });
+    await waitFor(() =>
+      expect(
+        screen.getByText(/error occurred invalid credentials/i)
+      ).toBeInTheDocument()
+    );
   });
 });
 

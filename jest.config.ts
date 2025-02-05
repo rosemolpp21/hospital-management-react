@@ -18,7 +18,9 @@ const config: Config.InitialOptions = {
   },
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    "^axios$": "<rootDir>/src/__mocks__/axios.ts",
   },
+  
 };
  
 export default config;
