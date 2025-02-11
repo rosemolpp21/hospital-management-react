@@ -28,8 +28,21 @@
     "react-hooks"
   ],
   "rules": {
-    "react/react-in-jsx-scope": "off", 
-    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
+    "react/react-in-jsx-scope": "off",
+    "react/function-component-definition": ["error",
+      {
+        "namedComponents": ["function-declaration" , "function-expression" , "arrow-function"],
+        "unnamedComponents": ["function-expression" , "arrow-function" ]
+      }
+    ],
+    "react/jsx-filename-extension": [
+      "warn",
+      {
+        "extensions": [
+          ".tsx"
+        ]
+      }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -40,7 +53,9 @@
         "jsx": "never"
       }
     ],
-    "@typescript-eslint/no-unused-vars": ["warn"],
+    "@typescript-eslint/no-unused-vars": [
+      "warn"
+    ],
     "no-console": "warn",
     "import/no-extraneous-dependencies": [
       "error",
@@ -59,10 +74,14 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "typescript": {}
     }
   }
 }
-
-  

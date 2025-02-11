@@ -1,0 +1,11 @@
+.doctor_images{
+    width:150px;
+    height:150px;
+    margin-left: 120px;
+}
+.doctor_details{
+    height:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
