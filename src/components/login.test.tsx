@@ -75,7 +75,7 @@ describe("Login Component", () => {
     fireEvent.click(screen.getByText(/Submit/i));
 
     await waitFor(() => {
-      expect(screen.getByText("Invalid credentials")).toBeInTheDocument();
+      expect(screen.getByText("error occurred invalid credentials")).toBeInTheDocument();
     });
   });
 

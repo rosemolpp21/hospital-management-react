@@ -13,23 +13,26 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSuccessMessage("");
+    setErrorMessage("");
     axios.post('http://localhost:8080/login/user', { email, password })
       .then(
         res => {
           if (res.status === 200) {
             setSuccessMessage("you are logined successfully");
+            setErrorMessage(" ");
             const token=res.data.accessToken;
             localStorage.setItem("token", token);
             localStorage.setItem("role","user");
             navigate("/userDashBoard"); 
           }
           else {
-            setErrorMessage("invalids credentials")
+            setErrorMessage("invalids credentials");
           }
         }
       )
       .catch((err) => {
-        if (err.response) {
+        if (err.response?.data?.messsage) {
           setErrorMessage(err.response.data.message);
         } else {
           setErrorMessage('error occurred invalid credentials');
