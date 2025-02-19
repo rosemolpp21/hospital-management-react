@@ -1,29 +1,46 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Card from "./Card";
-import "@testing-library/jest-dom";
 
 describe("Card Component", () => {
-  const doctorData = {
+  const mockProps = {
     name: "Dr. John peter",
-    email: "johnpeter@example.com",
-    phone: 9274597890,
+    email: "john@example.com",
+    phone: "1234567890",
     image: "/assets/doctor_image/doctor-1.png",
+    onclick: jest.fn(),
   };
 
-  test("renders doctor's name, email, and phone", () => {
-    render(<Card name={doctorData.name} email={doctorData.email} phone={doctorData.phone.toString()} image={doctorData.image} />);
-    
-    expect(screen.getByText(doctorData.name)).toBeInTheDocument();
-    expect(screen.getByText(doctorData.email)).toBeInTheDocument();
-    expect(screen.getByText(doctorData.phone.toString())).toBeInTheDocument();
-  });
-
-  test("renders doctor's image with correct src", () => {
-    render(<Card name={doctorData.name} email={doctorData.email} phone={doctorData.phone.toString()} image={doctorData.image} />);
-    
+  test("renders doctor details correctly", () => {
+    render(
+      <Card
+        name={mockProps.name}
+        email={mockProps.email}
+        phone={mockProps.phone}
+        image={mockProps.image}
+        onclick={mockProps.onclick}
+      />
+    );
+    expect(screen.getByText("Dr. John peter")).toBeInTheDocument();
+    expect(screen.getByText("john@example.com")).toBeInTheDocument();
+    expect(screen.getByText("1234567890")).toBeInTheDocument();
     const image = screen.getByAltText("doctor");
     expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src", doctorData.image);
+    expect(image).toHaveAttribute("src", mockProps.image);
+  });
+
+  test("calls onclick function when Discover button is clicked", () => {
+    render(
+      <Card
+        name={mockProps.name}
+        email={mockProps.email}
+        phone={mockProps.phone}
+        image={mockProps.image}
+        onclick={mockProps.onclick}
+      />
+    );
+    const button = screen.getByText("Discover");
+    fireEvent.click(button);
+    expect(mockProps.onclick).toHaveBeenCalledTimes(1);
   });
 });

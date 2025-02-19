@@ -5,7 +5,16 @@ import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import DoctorsList from "./Doctor_list"; 
 
-jest.mock("axios"); 
+jest.mock("../axios/axios_interceptor", () => ({
+  default: {
+    interceptors: {
+      request: { use: jest.fn() },
+      response: { use: jest.fn() },
+    },
+    get: jest.fn(),
+  },
+}));
+jest.mock("axios");
 
 describe("DoctorsList Component", () => {
   it("fetches and displays doctors", async () => {

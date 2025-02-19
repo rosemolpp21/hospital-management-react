@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/UserDashboard.css";
 import { useNavigate } from "react-router-dom";
+import axiosfetch from "../axios/axios_interceptor";
+import "../styles/UserDashboard.css";
+import Logout from "./Logout";
+
 
 const UserDashboard: React.FC = () => {
   const [userData, setUserData] = useState<{
+    ID:number;
     first_name: string;
     last_name: string;
     email: string;
@@ -17,7 +21,10 @@ const UserDashboard: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const token = localStorage.getItem("token");
-
+  const navigate=useNavigate();
+  function handleclick(){
+    navigate("/Bookappointment")
+  }
   useEffect(() => {
     const fetchData = async () => {
       if (!token) {
@@ -25,34 +32,22 @@ const UserDashboard: React.FC = () => {
         return;
       }
       try {
-        const userResponse = await axios.get("http://localhost:8080/users/viewdetails", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const userResponse = await axiosfetch.get("/users/viewdetails")
         setUserData(userResponse.data);
+        localStorage.setItem("patient_id", userResponse.data.ID);
         setSuccessMessage("You are logged in successfully");
         setErrorMessage("");
       } catch (err) {
-        if (axios.isAxiosError(err) && err.response) {
+        if ((axios.isAxiosError && axios.isAxiosError(err)) && err.response) {
           setErrorMessage(err.response.data?.message || "An error occurred");
           setSuccessMessage("");
         } else {
           setErrorMessage("Error in getting details");
         }
-      }
+      }      
     };
     fetchData();
   }, [token]);
-
-  const navigate = useNavigate();
-
-  function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/login");
-  }
-
-  
-
   return (
     <div id="user-dashboard">
       <h1 id="dashboard-head">User Dashboard</h1>
@@ -77,12 +72,10 @@ const UserDashboard: React.FC = () => {
       <h3 id="appointment-head">Appointment Details</h3>
       <div>You don&apos;t have any appointments</div>
       <div>
-        <button type="submit" id="book-appointment">
+        <button type="submit" id="book-appointment" onClick={handleclick}>
           Book Appointment
         </button>
-        <button type="submit" id="dash-logout" onClick={logout}>
-          Logout
-        </button>
+        <Logout/>
       </div>
     </div>
   );

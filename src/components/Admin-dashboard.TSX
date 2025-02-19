@@ -1,24 +1,12 @@
 import React from "react";
 import "../styles/UserDashboard.css";
-import { useNavigate } from "react-router-dom";
+import Logout from "./Logout";
 
-const AdminDashboard: React.FC = () => {
-  const navigate = useNavigate();
-
-  function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/login");
-  }
-
-  return (
-    <div className="admin-dashboard">
-      <h2 id="admin-dashboard">Hello, welcome Admin</h2>
-      <button type="button" onClick={logout} name="Logout">
-        Logout
-      </button>
-    </div>
-  );
-};
+const AdminDashboard: React.FC = () => (
+  <div className="admin-dashboard">
+    <h2 id="admin-dashboard">Hello, welcome Admin</h2>
+    <Logout/>
+  </div>
+);
 
 export default AdminDashboard;

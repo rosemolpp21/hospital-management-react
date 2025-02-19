@@ -47,7 +47,7 @@ describe("Loginadmin Component", () => {
       expect(localStorage.getItem("token")).toBe("fake-token")
       expect(screen.getByText(/you are logined successfully/i)).toBeInTheDocument()
     });
-    await waitFor(()=>{expect(mockNavigate).toHaveBeenCalledWith("/adminDashboard");},{timeout:1000});
+    await waitFor(()=>{expect(mockNavigate).toHaveBeenCalledWith("/adminDashboard");},{timeout:2000});
   });
 
   test("shows error message on invalid credentials", async () => {

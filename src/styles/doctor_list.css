@@ -15,18 +15,19 @@
 }
 
 .doctor-list-container{
-    background-color: #3c66b4;
+    background-color: rgba(74, 141, 212,0.5);
 }
 .doctor-details-button{
-    background-color: #3c66b4;
+    background-color: #628edf;
+    font-weight: bold;
     width:50%;
     margin-left: 25%;
 }
 .doctor-details-button:hover{
-    background-color: rgb(28, 90, 138);
+    background-color: rgb(45, 108, 157);
 }
 #doctor-team-mainheading{
-    color: white;
+    color: rgb(23, 67, 121);
     padding: 20px;
     text-align: center;
     font-size: 30px;

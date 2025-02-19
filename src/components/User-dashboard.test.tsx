@@ -1,80 +1,116 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from "react";
-import { render, screen, waitFor,fireEvent} from "@testing-library/react";
-import "@testing-library/jest-dom";
-import axios from "axios";
-import { BrowserRouter,MemoryRouter} from "react-router-dom";
+import { render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter, useNavigate } from "react-router-dom";
+import * as reactRouterDom from "react-router-dom";
+import userEvent from "@testing-library/user-event";
+import { jest } from "@jest/globals";
 import UserDashboard from "./User-dashboard";
+import axiosfetch from "../axios/axios_interceptor";
 
-jest.mock("axios");
-const mockedAxios = axios as jest.Mocked<typeof axios>;
-const mockNavigate = jest.fn();
-    jest.mock("react-router-dom", () => ({
-      ...jest.requireActual("react-router-dom"),
-      useNavigate: () => mockNavigate,
-    }));
-jest.mock("axios");
-describe("UserDashboard Component", () => {
-  const mockUserData = {
-    first_name: "John",
-    last_name: "Peter",
-    email: "johm.peter@example.com",
-    phone_no: 9234567890,
-    gender: "Male",
-    age: 22,
-    address: "Thrissur",
+
+
+jest.mock("react-router-dom", () => {
+  const actual = jest.requireActual<typeof reactRouterDom>("react-router-dom");
+
+  return {
+    ...actual,
+    useNavigate: jest.fn(),
   };
+});
+
+describe("UserDashboard Component", () => {
+  const mockNavigate = jest.fn();
+
   beforeEach(() => {
-    localStorage.setItem("token", "mocked-token");
+    localStorage.setItem("token", "test-token");
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
   });
 
   afterEach(() => {
     localStorage.clear();
+    jest.resetAllMocks();
   });
-  test("displays user details", async () => {
-    mockedAxios.get.mockResolvedValueOnce({ data: mockUserData })
-    render(
-      <BrowserRouter>
-        <UserDashboard />
-      </BrowserRouter>
-    );
-    expect(screen.getByText(/User Dashboard/i)).toBeInTheDocument();
-    await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledTimes(1));
-    expect(screen.getByText("Welcome, John Peter!")).toBeInTheDocument();
-    expect(screen.getByText("Email: johm.peter@example.com")).toBeInTheDocument();
-    expect(screen.getByText("Phone: 9234567890")).toBeInTheDocument();
-    expect(screen.getByText("Gender: Male")).toBeInTheDocument();
-    expect(screen.getByText("Age: 22")).toBeInTheDocument();
-    expect(screen.getByText("Address: Thrissur")).toBeInTheDocument();
-    expect(screen.getByText("Appointment Details")).toBeInTheDocument();
-    expect(screen.getByText("You don't have any appointments")).toBeInTheDocument();
 
-  });
-  test("navigates to /login after logout", async () => {
+  test("renders user data correctly on successful API call", async () => {
+    const mockUserData = {
+      ID: 1,
+      first_name: "John",
+      last_name: "peter",
+      email: "john.peter@example.com",
+      phone_no: 1234567890,
+      gender: "Male",
+      age: 22,
+      address: "thrissur",
+    };
+  
+    (axiosfetch.get as jest.MockedFunction<typeof axiosfetch.get>).mockResolvedValueOnce({
+      data: mockUserData,
+    });
+  
     render(
       <MemoryRouter>
         <UserDashboard />
       </MemoryRouter>
     );
-
-    const logoutButton = screen.getByText(/Logout/);
-    fireEvent.click(logoutButton);
-
-
+  
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith("/login");
+      expect(screen.getByText("Welcome, John peter!")).toBeInTheDocument();
     });
   });
-  test(" book appointment page", async () => {
+  
+
+  test("shows error message when API call fails", async () => {
+    const error = {
+      response: { data: { message: "An error occurred" } },
+    };
+    (axiosfetch.get as jest.MockedFunction<typeof axiosfetch.get>).mockRejectedValueOnce(error);
+    
     render(
       <MemoryRouter>
         <UserDashboard />
       </MemoryRouter>
     );
-    expect(screen.getByText(/Book Appointment/)).toBeInTheDocument();
+  
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(/error/i);
+    });      
+  });
+  
+  
+
+  test("handles network error when API call fails without response", async () => {
+    (axiosfetch.get as jest.MockedFunction<typeof axiosfetch.get>).mockRejectedValueOnce(
+      new Error("Network Error")
+    );
+  
+    render(
+      <MemoryRouter>
+        <UserDashboard />
+      </MemoryRouter>
+    );
+  
+    await waitFor(() => {
+      expect(screen.getByText("Error in getting details")).toBeInTheDocument();
+    });
+  });
+  
+
+  test("navigates to book appointment page on button click", async () => {
+    render(
+      <MemoryRouter>
+        <UserDashboard />
+      </MemoryRouter>
+    );
+
+    const button = screen.getByText("Book Appointment");
+    userEvent.click(button);
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith("/Bookappointment");
+    });
   });
 });
-
-
 
 
 

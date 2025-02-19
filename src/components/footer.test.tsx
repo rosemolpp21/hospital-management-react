@@ -6,7 +6,7 @@ import Footer  from "./Footer";
 describe("footer component", () => {
     test("renders footer text", () => {
         render(<Footer />);
-        expect(screen.getByText("© 2021 Hospital Management System")).toBeInTheDocument();
+        expect(screen.getByText("© 2025 Hospital Management System | All Rights Reserved")).toBeInTheDocument();
     })
   });
   

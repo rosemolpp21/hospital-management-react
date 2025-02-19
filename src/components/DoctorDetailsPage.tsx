@@ -16,7 +16,8 @@ interface Doctor {
 const DoctorDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [doctor, setDoctor] = useState<Doctor>();
-
+  const token=localStorage.getItem("token");
+  const k=token?"/Bookappointment":"/login";
   useEffect(() => {
     axios
       .get(`http://localhost:8080/doctors/${id}`)
@@ -44,6 +45,7 @@ const DoctorDetails: React.FC = () => {
       <p className="doctor-details-paragraph"><strong>Phone:</strong> {doctor.phone}</p>
       <p className="doctor-details-paragraph"><strong>Speciality:</strong> {doctor.speciality}</p>
       <p className="doctor-details-paragraph"><strong>Timing:</strong> {doctor.timing}</p>
+      <button type="button" id="doctor-details-bookappointment"><a href={k}>Book Appointment</a></button>
       </div>
       </div>
     </div>

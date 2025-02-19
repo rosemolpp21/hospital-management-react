@@ -9,3 +9,6 @@
     flex-direction: column;
     justify-content: center;
 }
+.doctor-container h4,p{
+    text-align: center;
+}

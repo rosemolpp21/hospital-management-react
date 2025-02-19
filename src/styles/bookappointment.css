@@ -1,0 +1,47 @@
+#bookappointment-cont {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  #bookappointment-cont h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  #bookappointment-cont form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #bookappointment-cont select, input {
+    width: 94%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  #bookappointment-cont select{
+    width: 100%;
+  }
+  
+  #bookappointment-cont button {
+    background: #073c74;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  #bookappointment-cont button:hover {
+    background: #0056b3;
+  }
+  

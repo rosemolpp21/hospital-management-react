@@ -2,7 +2,7 @@
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    background: #3c66b4;
+    background: rgba(74, 141, 212,0.7);
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -11,7 +11,7 @@
     color:rgb(255, 255, 255)
   }
   .success-message {
-    color: rgb(133, 213, 195);
+    color: rgb(3, 68, 100);
     font-size: 18px;
     font-weight: bold;
     margin-top: 10px;
@@ -25,11 +25,11 @@
     background-color: rgb(168, 28, 28);
   }
   #book-appointment{
-    background-color: rgb(19, 73, 19);
+    background-color: rgb(31, 129, 195);
     width:200px;
   }
   #book-appointment:hover{
-    background-color: rgb(20, 96, 20);
+    background-color: rgb(83, 123, 183);
   }
   .error-message {
     color: rgb(244, 114, 114);
@@ -43,19 +43,18 @@
     margin-top: 20px;
     padding: 15px;
     border-radius: 8px;
-    background: #3c66b4;
   }
   
   .user-name {
-    color: #ffffff;
+    color: rgb(255, 255, 255);
     font-size: 24px;
-    font-weight: bold;
+    font-weight: bolder;
     margin-bottom: 10px;
   }
   
   .user-details {
     font-size: 18px;
-    color:#ffffff;
+    color:rgb(255, 255, 255);
     margin: 5px 0;
   }
   

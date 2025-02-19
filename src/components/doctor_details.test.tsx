@@ -36,7 +36,7 @@ describe("DoctorDetails Component", () => {
       expect(screen.getByText(/Cardiologist/i)).toBeInTheDocument();
       expect(screen.getByText(/9 AM - 5 PM/i)).toBeInTheDocument();
     });
-    const doctorImage = screen.getByAltText("Dr. Smith");
+    const doctorImage = screen.getByAltText("Dr. john");
     expect(doctorImage).toBeInTheDocument();
     expect(doctorImage).toHaveAttribute("src", "/assets/doctor_image/doctor-1.png");
   });
