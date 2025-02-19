@@ -1,0 +1,71 @@
+body{
+    background-image: url(https://www.kevinmd.com/blog/wp-content/uploads/shutterstock_662318113.jpg);
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+}
+.navbar {
+  background-color: #1e4182; 
+  color: white;
+  padding: 20px 0px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width:100%;
+  
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.nav-head {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: #81a7ef;
+}
+
+
+.login-dropdown {
+  margin-left: 20px;
+}
+
+.login-select {
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #3c66b4;
+  color: #f8f9fa;
+}
+.login-select:hover{
+  background-color: #4579d8;
+}

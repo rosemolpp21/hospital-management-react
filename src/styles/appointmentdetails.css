@@ -1,0 +1,60 @@
+#appointment-detail-container {
+    width: 100%;
+    max-width: 1200px;
+    margin:auto;
+    text-align: center;
+  }
+  
+  #appointment-details-heading {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  #appointment-details-cont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  #appointment-details-cont div {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    align-items: center;
+    min-width: 250px;
+    margin-top:20px;
+  }
+  
+  #appointment-details-cont p {
+    margin: 5px 0;
+    width:1150px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  #appointment-cancel-button{
+    background: #c53d3d;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  #appointment-payment-proceed-button a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  #appointment-cancel-button:hover {
+    background: #9b1f1f;
+  }

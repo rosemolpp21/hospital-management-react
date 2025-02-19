@@ -11,6 +11,8 @@
 # production
 /build
 
+/src/__mocks__
+
 # misc
 .DS_Store
 .env.local
@@ -22,3 +24,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .scannerwork
+.sonar-project.properties
+.sonartmp
+.sonar.tmp
+.husky
+.env
